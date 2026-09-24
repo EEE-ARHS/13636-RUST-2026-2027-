@@ -1,0 +1,18 @@
+{
+	"extension": {
+		"version": "0.8.2026020401",
+		"json": 2
+	},
+	"project": {
+		"name": "Proto_P",
+		"description": "Code for Prototyping",
+		"creationDate": "9/21/2026, 4:35:14 PM",
+		"platform": "V5",
+		"language": "python",
+		"slot": 8,
+		"sdkVersion": "V5_1_0_1_25",
+		"python": {
+			"main": "src/drivetrain.py"
+		}
+	}
+}
