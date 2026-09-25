@@ -25,42 +25,42 @@ motor_rb = Motor(Ports.PORT4)
 Ldrivetrain = DriveTrain(motor_rf, motor_rb)
 Rdrivetrain = DriveTrain(motor_lf, motor_lb)
 
-# L Loop
+# R Loop
 def thread_loop():
     while True:
         if drive_control.axis3.position() > 1:
-            Ldrivetrain.set_drive_velocity(abs(drive_control.axis3.position()), PERCENT)
-            Ldrivetrain.drive(REVERSE)
+            Rdrivetrain.set_drive_velocity(abs(drive_control.axis3.position()), PERCENT)
+            Rdrivetrain.drive(FORWARD)
             wait(20, MSEC)
         elif drive_control.axis3.position() < -1:
-            Ldrivetrain.set_drive_velocity(abs(drive_control.axis3.position()), PERCENT)
-            Ldrivetrain.drive(FORWARD)
+            Rdrivetrain.set_drive_velocity(abs(drive_control.axis3.position()), PERCENT)
+            Rdrivetrain.drive(REVERSE)
             wait(20, MSEC)
         # Press A to use Controller configured actions again
         elif drive_control.buttonA.pressing():
             break
         else:
-            Ldrivetrain.stop()    
+            Rdrivetrain.stop()    
             wait(20, MSEC)
 
 # Start the intake thread
 switch_drive = Thread(thread_loop)
 
-# R Loop
+# L Loop
 while True:
     if drive_control.axis2.position() > 1:
-        Rdrivetrain.set_drive_velocity(abs(drive_control.axis2.position()), PERCENT)
-        Rdrivetrain.drive(FORWARD)
+        Ldrivetrain.set_drive_velocity(abs(drive_control.axis2.position()), PERCENT)
+        Ldrivetrain.drive(REVERSE)
         wait(20, MSEC)
     elif drive_control.axis2.position() < -1:
-        Rdrivetrain.set_drive_velocity(abs(drive_control.axis2.position()), PERCENT)
-        Rdrivetrain.drive(REVERSE)
+        Ldrivetrain.set_drive_velocity(abs(drive_control.axis2.position()), PERCENT)
+        Ldrivetrain.drive(FORWARD)
         wait(20, MSEC)
     # Press A to use Controller configured actions again
     elif drive_control.buttonA.pressing():
         break
     else:
-        Rdrivetrain.stop()
+        Ldrivetrain.stop()
         wait(20, MSEC)
 
 remote_control_code_enabled = True
