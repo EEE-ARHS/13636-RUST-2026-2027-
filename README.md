@@ -1,4 +1,6 @@
-# ![LOGO](https://github.com/user-attachments/assets/ac8b3f8b-491b-4620-a9c4-e8303f190d1c)
+<h1 align="center">
+  <img src="https://github.com/user-attachments/assets/ac8b3f8b-491b-4620-a9c4-e8303f190d1c" alt="LOGO">
+</h1>
 
 <a href="https://www.vexrobotics.com/v5" target="blank">![Static Badge](https://img.shields.io/badge/vex_v5-n?style=for-the-badge&label=platform&color=%23FF6961)</a>
 <a href="https://code.visualstudio.com/" target="blank">![Static Badge](https://img.shields.io/badge/VS_code-n?style=for-the-badge&label=ide&color=%231E90FF)</a>
