@@ -12,7 +12,7 @@
 		"slot": 8,
 		"sdkVersion": "V5_1_0_1_25",
 		"python": {
-			"main": "src/tankdrive.py"
+			"main": "src/Drivetrain/tankdrive.py"
 		}
 	}
 }
