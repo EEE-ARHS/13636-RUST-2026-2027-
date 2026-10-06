@@ -22,8 +22,9 @@ motor_lb = Motor(Ports.PORT2)
 motor_lf = Motor(Ports.PORT3)
 motor_rb = Motor(Ports.PORT4)
 
-mech_m = Motor(Ports.PORT8)
-        
+elevator_motorR = Motor(Ports.PORT9)
+elevator_motorL = Motor(Ports.PORT10)
+           
 Ldrivetrain = DriveTrain(motor_rf, motor_rb)
 Rdrivetrain = DriveTrain(motor_lf, motor_lb)
 
@@ -55,14 +56,17 @@ while True:
         wait(20, MSEC)
     # Press A to use Controller configured actions again
     elif drive_control.buttonL1.pressing():
-        mech_m.spin(FORWARD,12, VOLT)
+        elevator_motorR.spin(REVERSE,12, VOLT)
+        elevator_motorL.spin(FORWARD,12, VOLT)
     elif drive_control.buttonL2.pressing():
-            mech_m.spin(REVERSE,12, VOLT)
+        elevator_motorR.spin(FORWARD,12, VOLT)
+        elevator_motorL.spin(REVERSE,12, VOLT)
     else:
         Rdrivetrain.stop()
         Ldrivetrain.stop()
 
-        mech_m.stop()
+        elevator_motorR.stop()
+        elevator_motorL.stop()
 
         wait(20, MSEC)
 

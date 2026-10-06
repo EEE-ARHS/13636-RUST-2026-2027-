@@ -96,11 +96,11 @@ while True:
 
     # Press A to use Controller configured actions again
     elif drive_control.buttonL1.pressing():
-        elevator_motorR.spin(FORWARD,12, VOLT)
-        elevator_motorL.spin(REVERSE,12, VOLT)
-    elif drive_control.buttonL2.pressing():
         elevator_motorR.spin(REVERSE,12, VOLT)
         elevator_motorL.spin(FORWARD,12, VOLT)
+    elif drive_control.buttonL2.pressing():
+        elevator_motorR.spin(FORWARD,12, VOLT)
+        elevator_motorL.spin(REVERSE,12, VOLT)
     else:
         Rdrivetrain.stop()
         Ldrivetrain.stop()
