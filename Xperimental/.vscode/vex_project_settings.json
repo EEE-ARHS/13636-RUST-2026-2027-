@@ -1,0 +1,18 @@
+{
+	"extension": {
+		"version": "0.8.2026020401",
+		"json": 2
+	},
+	"project": {
+		"name": "Xperimental",
+		"description": "Experiments here.",
+		"creationDate": "10/7/2026, 5:25:46 PM",
+		"platform": "V5",
+		"language": "python",
+		"slot": 3,
+		"sdkVersion": "V5_1_0_1_25",
+		"python": {
+			"main": "src/DR4BElevator.py"
+		}
+	}
+}

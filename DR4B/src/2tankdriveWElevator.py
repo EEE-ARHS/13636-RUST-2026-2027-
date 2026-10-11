@@ -24,6 +24,7 @@ motor_rb = Motor(Ports.PORT4)
 
 elevator_motorR = Motor(Ports.PORT9)
 elevator_motorL = Motor(Ports.PORT10)
+piston = Pneumatics(brain.three_wire_port.a)
            
 Ldrivetrain = DriveTrain(motor_rf, motor_rb)
 Rdrivetrain = DriveTrain(motor_lf, motor_lb)
@@ -56,11 +57,23 @@ while True:
         wait(20, MSEC)
     # Press A to use Controller configured actions again
     elif drive_control.buttonL1.pressing():
-        elevator_motorR.spin(REVERSE,12, VOLT)
-        elevator_motorL.spin(FORWARD,12, VOLT)
+        #elevator_motorR.spin(REVERSE,12, VOLT)
+        #elevator_motorL.spin(FORWARD,12, VOLT)
+        elevator_motorR.spin(REVERSE)
+        elevator_motorL.spin(FORWARD)
     elif drive_control.buttonL2.pressing():
-        elevator_motorR.spin(FORWARD,12, VOLT)
-        elevator_motorL.spin(REVERSE,12, VOLT)
+        #elevator_motorR.spin(FORWARD,12, VOLT)
+        #elevator_motorL.spin(REVERSE,12, VOLT)
+        elevator_motorL.spin(REVERSE)
+        elevator_motorR.spin(FORWARD)
+    # Claw
+    if drive_control.buttonA.pressing():
+        piston.open()
+        wait(20, MSEC)
+    elif drive_control.buttonB.pressing():
+        piston.close()
+        wait(20, MSEC)
+    
     else:
         Rdrivetrain.stop()
         Ldrivetrain.stop()

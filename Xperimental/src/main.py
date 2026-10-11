@@ -2,7 +2,7 @@
 #                                                                              #
 # 	Module:       main.py                                                      #
 # 	Author:       eeeng                                                        #
-# 	Created:      9/25/2026, 7:35:37 PM                                        #
+# 	Created:      10/7/2026, 5:25:46 PM                                        #
 # 	Description:  V5 project                                                   #
 #                                                                              #
 # ---------------------------------------------------------------------------- #
@@ -10,22 +10,18 @@
 # Library imports
 from vex import *
 
+# Brain should be defined by default
 brain = Brain()
+drive_control = Controller(PRIMARY)
+mech_control = Controller(PARTNER)
+remote_control_code_enabled = False
 
-def autonomous():
-    brain.screen.clear_screen()
-    brain.screen.print("autonomous code")
-    # place automonous code here
+ai_vision_1 = AiVision(Ports.PORT1, AiVision.ALL_AIOBJS)
 
-def user_control():
-    brain.screen.clear_screen()
-    brain.screen.print("driver control")
-    # place driver control in this while loop
-    while True:
-        wait(20, MSEC)
 
-# create competition instance
-comp = Competition(user_control, autonomous)
+while True:
+    wait(20, MSEC)
 
-# actions to do when the program starts
-brain.screen.clear_screen()
+remote_control_code_enabled = True
+
+        
