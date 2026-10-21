@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="https://github.com/user-attachments/assets/ac8b3f8b-491b-4620-a9c4-e8303f190d1c" alt="LOGO">
+  <img alt="Robotics logo" src="https://github.com/user-attachments/assets/e05fe79d-2ca6-46b7-b55b-da4334c47ec3"/>
 </h1>
 
 <a href="https://www.vexrobotics.com/v5" target="blank">![Static Badge](https://img.shields.io/badge/vex_v5-n?style=for-the-badge&label=platform&color=%23FF6961)</a>
