@@ -61,15 +61,12 @@ while True:
         elevator_motor.spin(FORWARD,12, VOLT)
     elif drive_control.buttonL2.pressing():
         elevator_motor.spin(REVERSE,12, VOLT)
-    # Intake
+    # Intake & Claw
     elif drive_control.buttonA.pressing():
         intake_motor.spin(FORWARD,12, VOLT)
+        claw_motor.spin(FORWARD,12, VOLT)
     elif drive_control.buttonB.pressing():
         intake_motor.spin(REVERSE,12, VOLT)
-    # Claw
-    elif drive_control.buttonR1.pressing():
-        claw_motor.spin(FORWARD,12, VOLT)
-    elif drive_control.buttonR2.pressing():
         claw_motor.spin(REVERSE,12, VOLT)
 
     else:
@@ -77,6 +74,8 @@ while True:
         Ldrivetrain.stop()
 
         elevator_motor.stop()
+        claw_motor.stop()
+        intake_motor.stop()
 
         wait(20, MSEC)
 
