@@ -24,7 +24,7 @@ motor_rb = Motor(Ports.PORT4)
 elevator_motor = Motor(Ports.PORT8)
 intake_motor = Motor(Ports.PORT9)
 claw_motor = Motor(Ports.PORT10)
-        
+
 Ldrivetrain = DriveTrain(motor_rf, motor_rb)
 Rdrivetrain = DriveTrain(motor_lf, motor_lb)
 
