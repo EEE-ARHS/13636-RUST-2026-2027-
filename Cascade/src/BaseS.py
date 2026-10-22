@@ -13,7 +13,6 @@ from vex import *
 # Brain + Controller 
 brain = Brain()
 drive_control = Controller(PRIMARY)
-mech_control = Controller(PARTNER)
 remote_control_code_enabled = False
 
 # Drivetrain motors/groups defined
@@ -21,6 +20,11 @@ motor_rf = Motor(Ports.PORT1)
 motor_lb = Motor(Ports.PORT2)
 motor_lf = Motor(Ports.PORT3)
 motor_rb = Motor(Ports.PORT4)
+
+# Mech
+elevator_motor = Motor(Ports.PORT8)
+intake_motor = Motor(Ports.PORT9)
+claw_motor = Motor(Ports.PORT10)
         
 Ldrivetrain = DriveTrain(motor_rf, motor_rb)
 Rdrivetrain = DriveTrain(motor_lf, motor_lb)
@@ -51,13 +55,29 @@ while True:
         Rdrivetrain.drive(REVERSE)
         Ldrivetrain.drive(REVERSE)
         wait(20, MSEC)
-    # Press A to use Controller configured actions again
+    # L1 L2 Elevator
+    elif drive_control.buttonL1.pressing():
+        elevator_motor.spin(FORWARD,12, VOLT)
+    elif drive_control.buttonL2.pressing():
+        elevator_motor.spin(REVERSE,12, VOLT)
+    # Intake & Claw
     elif drive_control.buttonA.pressing():
-        break
+        intake_motor.spin(FORWARD,12, VOLT)
+        claw_motor.spin(FORWARD,12, VOLT)
+    elif drive_control.buttonB.pressing():
+        intake_motor.spin(REVERSE,12, VOLT)
+        claw_motor.spin(REVERSE,12, VOLT)
+
     else:
         Rdrivetrain.stop()
         Ldrivetrain.stop()
 
+        elevator_motor.stop()
+        claw_motor.stop()
+        intake_motor.stop()
+
         wait(20, MSEC)
+
+    
 
 remote_control_code_enabled = True
