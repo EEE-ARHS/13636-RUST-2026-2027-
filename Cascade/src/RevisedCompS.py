@@ -16,20 +16,18 @@ drive_control = Controller(PRIMARY)
 
 # Drivetrain motors/groups defined
 motor_rf = Motor(Ports.PORT1,GearSetting.RATIO_18_1, False)
-motor_lb = Motor(Ports.PORT10,GearSetting.RATIO_18_1, True)
-motor_lf = Motor(Ports.PORT2,GearSetting.RATIO_18_1, False)
-motor_rb = Motor(Ports.PORT9,GearSetting.RATIO_18_1, True)
+motor_lb = Motor(Ports.PORT2,GearSetting.RATIO_18_1, True)
+motor_lf = Motor(Ports.PORT3,GearSetting.RATIO_18_1, True)
+motor_rb = Motor(Ports.PORT4,GearSetting.RATIO_18_1, False)
 Ldrivetrain = MotorGroup(motor_rf, motor_rb)
 Rdrivetrain = MotorGroup(motor_lf, motor_lb)
 drivetrain = DriveTrain(Ldrivetrain,Rdrivetrain)
 
 # Mechanics/Elevator motor/groups defined
-elevator_motorR = Motor(Ports.PORT3,GearSetting.RATIO_18_1,False)
-elevator_motorL = Motor(Ports.PORT4,GearSetting.RATIO_18_1,True)
-elevator_full = MotorGroup(elevator_motorL,elevator_motorR)
-
-claw_angle_motor = Motor(Ports.PORT20)
-piston = Pneumatics(brain.three_wire_port.a)
+elevator_motor = Motor(Ports.PORT8,GearSetting.RATIO_18_1)
+intake_motor = Motor(Ports.PORT9,GearSetting.RATIO_18_1)
+claw_motor = Motor(Ports.PORT10,GearSetting.RATIO_18_1)
+intake_claw_motor = MotorGroup(intake_motor,claw_motor)
 
 # auton
 def autonomous():
@@ -62,25 +60,19 @@ def driving_control():
 
 # elevator
 def elevator_up():
-    elevator_full.spin(FORWARD, 100, PERCENT)
+    elevator_motor.spin(FORWARD, 100, PERCENT)
 def elevator_down():
-    elevator_full.spin(REVERSE, 100, PERCENT)
+    elevator_motor.spin(REVERSE, 100, PERCENT)
 def elevator_stop():
-    elevator_full.stop()
+    elevator_motor.stop()
 
-# claw orientation
-def rotate_up():
-    claw_angle_motor.spin(FORWARD, 70, PERCENT)
-def rotate_down():
-    claw_angle_motor.spin(REVERSE, 70, PERCENT)
-def rotate_stop():
-    claw_angle_motor.stop()
-
-# claw grip
-def close_grip():
-    piston.open()
-def open_grip():
-    piston.close()
+# intake and claw
+def intake_in():
+    intake_claw_motor.spin(FORWARD, 100, PERCENT)
+def intake_out():
+    intake_claw_motor.spin(REVERSE, 100, PERCENT)
+def intake_stop():
+    intake_claw_motor.stop()
 
 # create competition instance
 comp = Competition(driving_control, autonomous)
@@ -88,9 +80,7 @@ comp = Competition(driving_control, autonomous)
 # actions to do when the program starts
 brain.screen.clear_screen()
 
-elevator_motorR.set_stopping(HOLD)
-elevator_motorL.set_stopping(HOLD)
-claw_angle_motor.set_stopping(BRAKE)
+intake_claw_motor.set_stopping(HOLD)
 
 drive_control.buttonL1.pressed(elevator_up)
 drive_control.buttonL1.released(elevator_stop)
@@ -98,8 +88,8 @@ drive_control.buttonL1.released(elevator_stop)
 drive_control.buttonL2.pressed(elevator_down)
 drive_control.buttonL2.released(elevator_stop)
 
-drive_control.buttonR1.pressed(rotate_up)
-drive_control.buttonR1.released(rotate_stop)
+drive_control.buttonR1.pressed(intake_in)
+drive_control.buttonR1.released(intake_stop)
 
-drive_control.buttonR2.pressed(rotate_down)
-drive_control.buttonR2.released(rotate_stop)
+drive_control.buttonR2.pressed(intake_out)
+drive_control.buttonR2.released(intake_stop)
