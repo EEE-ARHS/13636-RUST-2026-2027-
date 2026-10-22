@@ -82,10 +82,10 @@ def user_control():
             wait(20, MSEC)
         # Claw
         elif drive_control.buttonR1.pressing():
-            claw_angle_motor.spin(FORWARD)
+            claw_angle_motor.spin(FORWARD,70, PERCENT)
             wait(20, MSEC)
         elif drive_control.buttonR2.pressing():
-            claw_angle_motor.spin(REVERSE)
+            claw_angle_motor.spin(REVERSE,70, PERCENT)
             wait(20, MSEC)        
         elif drive_control.buttonA.pressing():
             piston.open()

@@ -14,7 +14,6 @@ from vex import *
 brain = Brain()
 drive_control = Controller(PRIMARY)
 
-
 # Drivetrain motors/groups defined
 motor_rf = Motor(Ports.PORT1,GearSetting.RATIO_18_1, False)
 motor_lb = Motor(Ports.PORT2,GearSetting.RATIO_18_1, True)
@@ -59,6 +58,13 @@ def driving_control():
         Rdrivetrain.spin(FORWARD, (forward - turn), PERCENT)
         wait(20, MSEC)
 
+# elevator
+def elevator_up():
+    elevator_motor.spin(FORWARD, 100, PERCENT)
+def elevator_down():
+    elevator_motor.spin(REVERSE, 100, PERCENT)
+def elevator_stop():
+    elevator_motor.stop()
 
 # intake and claw
 def intake_in():
@@ -75,6 +81,12 @@ comp = Competition(driving_control, autonomous)
 brain.screen.clear_screen()
 
 intake_claw_motor.set_stopping(BRAKE)
+
+drive_control.buttonL1.pressed(elevator_up)
+drive_control.buttonL1.released(elevator_stop)
+
+drive_control.buttonL2.pressed(elevator_down)
+drive_control.buttonL2.released(elevator_stop)
 
 drive_control.buttonR1.pressed(intake_in)
 drive_control.buttonR1.released(intake_stop)
