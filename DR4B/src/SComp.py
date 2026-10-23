@@ -77,8 +77,8 @@ def driving_control():
         current_turn = slew(current_turn, target_turn, accel_step)
 
         # Apply the eased speeds to the motors
-        Ldrivetrain.spin(FORWARD, (current_forward - current_turn), PERCENT)
-        Rdrivetrain.spin(FORWARD, (current_forward + current_turn), PERCENT)
+        Ldrivetrain.spin(FORWARD, (current_forward + current_turn), PERCENT)
+        Rdrivetrain.spin(FORWARD, (current_forward - current_turn), PERCENT)
         
         wait(20, MSEC)
 
