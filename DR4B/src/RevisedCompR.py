@@ -48,16 +48,38 @@ def autonomous():
 def deadband(value, threshold=5):
     return 0 if abs(value) < threshold else value
 
+# Helper function to ease the current value towards the target
+def slew(current, target, step):
+    if current < target:
+        return min(current + step, target)
+    elif current > target:
+        return max(current - step, target)
+    return target
+
 def driving_control():
     brain.screen.clear_screen()
     brain.screen.print("driver control")
-    # place driver control in this while loop
+    
+    # Store the current speeds outside the loop
+    current_forward = 0
+    current_turn = 0
+    
+    # Maximum change per 20ms loop (lower = smoother/slower acceleration)
+    accel_step = 5 
+    
     while True:
-        forward = deadband(drive_control.axis3.position())
-        turn = deadband(drive_control.axis1.position())
+        # Get target speeds from the controller
+        target_forward = deadband(drive_control.axis3.position())
+        target_turn = deadband(drive_control.axis1.position())
 
-        Ldrivetrain.spin(FORWARD, (forward + turn), PERCENT)
-        Rdrivetrain.spin(FORWARD, (forward - turn), PERCENT)
+        # Ease current speeds toward the target speeds
+        current_forward = slew(current_forward, target_forward, accel_step)
+        current_turn = slew(current_turn, target_turn, accel_step)
+
+        # Apply the eased speeds to the motors
+        Ldrivetrain.spin(FORWARD, (current_forward - current_turn), PERCENT)
+        Rdrivetrain.spin(FORWARD, (current_forward + current_turn), PERCENT)
+        
         wait(20, MSEC)
 
 # elevator

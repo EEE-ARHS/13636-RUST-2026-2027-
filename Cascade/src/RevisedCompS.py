@@ -15,20 +15,20 @@ brain = Brain()
 drive_control = Controller(PRIMARY)
 
 # Drivetrain motors/groups defined
-motor_rf = Motor(Ports.PORT1,GearSetting.RATIO_18_1, False)
-motor_lb = Motor(Ports.PORT2,GearSetting.RATIO_18_1, True)
-motor_lf = Motor(Ports.PORT3,GearSetting.RATIO_18_1, True)
-motor_rb = Motor(Ports.PORT4,GearSetting.RATIO_18_1, False)
+motor_rf = Motor(Ports.PORT1,GearSetting.RATIO_18_1, True)
+motor_lb = Motor(Ports.PORT10,GearSetting.RATIO_18_1, False)
+motor_lf = Motor(Ports.PORT9,GearSetting.RATIO_18_1, False)
+motor_rb = Motor(Ports.PORT2,GearSetting.RATIO_18_1, True)
 Ldrivetrain = MotorGroup(motor_rf, motor_rb)
 Rdrivetrain = MotorGroup(motor_lf, motor_lb)
 drivetrain = DriveTrain(Ldrivetrain,Rdrivetrain)
 
 # Mechanics/Elevator motor/groups defined
-elevator_motor = Motor(Ports.PORT8,GearSetting.RATIO_18_1)
-intake_motor = Motor(Ports.PORT9,GearSetting.RATIO_18_1)
-claw_motor = Motor(Ports.PORT10,GearSetting.RATIO_18_1)
+elevator_motor = Motor(Ports.PORT20,GearSetting.RATIO_18_1)
+intake_motor = Motor(Ports.PORT3,GearSetting.RATIO_18_1)
+claw_motor = Motor(Ports.PORT4,GearSetting.RATIO_18_1)
 intake_claw_motor = MotorGroup(intake_motor,claw_motor)
-
+piston = Pneumatics(brain.three_wire_port.a)
 # auton
 def autonomous():
     brain.screen.clear_screen()
@@ -54,8 +54,8 @@ def driving_control():
         forward = deadband(drive_control.axis3.position())
         turn = deadband(drive_control.axis1.position())
 
-        Ldrivetrain.spin(FORWARD, (forward + turn), PERCENT)
-        Rdrivetrain.spin(FORWARD, (forward - turn), PERCENT)
+        Ldrivetrain.spin(FORWARD, (forward - turn), PERCENT)
+        Rdrivetrain.spin(FORWARD, (forward + turn), PERCENT)
         wait(20, MSEC)
 
 # elevator
@@ -66,7 +66,13 @@ def elevator_down():
 def elevator_stop():
     elevator_motor.stop()
 
-# intake and claw
+# piston
+def piston_close():
+    piston.close()
+def piston_open():
+    piston.open()
+
+# intake
 def intake_in():
     intake_claw_motor.spin(FORWARD, 100, PERCENT)
 def intake_out():
@@ -80,7 +86,9 @@ comp = Competition(driving_control, autonomous)
 # actions to do when the program starts
 brain.screen.clear_screen()
 
-intake_claw_motor.set_stopping(HOLD)
+elevator_motor.set_max_torque(100,PERCENT)
+intake_motor.set_stopping(HOLD)
+claw_motor.set_stopping(HOLD)
 
 drive_control.buttonL1.pressed(elevator_up)
 drive_control.buttonL1.released(elevator_stop)
@@ -88,8 +96,11 @@ drive_control.buttonL1.released(elevator_stop)
 drive_control.buttonL2.pressed(elevator_down)
 drive_control.buttonL2.released(elevator_stop)
 
-drive_control.buttonR1.pressed(intake_in)
-drive_control.buttonR1.released(intake_stop)
+drive_control.buttonR1.pressed(piston_close)
+drive_control.buttonR2.pressed(piston_open)
 
-drive_control.buttonR2.pressed(intake_out)
-drive_control.buttonR2.released(intake_stop)
+drive_control.buttonA.pressed(intake_in)
+drive_control.buttonA.released(intake_stop)
+
+drive_control.buttonB.pressed(intake_out)
+drive_control.buttonB.released(intake_stop)
