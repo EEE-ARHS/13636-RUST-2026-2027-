@@ -42,3 +42,5 @@ def autonomous():
     wait(500, MSEC)
     drivetrain.stop()
     drivetrain.set_stopping(COAST)
+
+autonomous()

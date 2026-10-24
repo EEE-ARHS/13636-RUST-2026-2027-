@@ -15,10 +15,10 @@ brain = Brain()
 drive_control = Controller(PRIMARY)
 
 # Drivetrain motors/groups defined
-motor_rf = Motor(Ports.PORT1,GearSetting.RATIO_18_1, True)
-motor_lb = Motor(Ports.PORT10,GearSetting.RATIO_18_1, False)
-motor_lf = Motor(Ports.PORT9,GearSetting.RATIO_18_1, False)
-motor_rb = Motor(Ports.PORT2,GearSetting.RATIO_18_1, True)
+motor_rf = Motor(Ports.PORT1,GearSetting.RATIO_18_1, False)
+motor_lb = Motor(Ports.PORT10,GearSetting.RATIO_18_1, True)
+motor_lf = Motor(Ports.PORT9,GearSetting.RATIO_18_1, True)
+motor_rb = Motor(Ports.PORT2,GearSetting.RATIO_18_1, False)
 Ldrivetrain = MotorGroup(motor_rf, motor_rb)
 Rdrivetrain = MotorGroup(motor_lf, motor_lb)
 drivetrain = DriveTrain(Ldrivetrain,Rdrivetrain)
@@ -67,7 +67,7 @@ def driving_control():
     
     while True:
         # Get target speeds from the controller
-        target_forward = deadband(drive_control.axis3.position())
+        target_forward = deadband(-1 * drive_control.axis3.position())
         target_turn = deadband(drive_control.axis1.position())
 
         # Ease current speeds toward the target speeds

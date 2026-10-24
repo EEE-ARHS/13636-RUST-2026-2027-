@@ -42,4 +42,12 @@ def autonomous():
     drivetrain.drive(FORWARD,50,PERCENT)
     wait(500, MSEC)
     drivetrain.stop()
+    Ldrivetrain.spin(FORWARD, 50, PERCENT)
+    Rdrivetrain.spin(REVERSE, 50, PERCENT)
+    wait(500, MSEC)
+    drivetrain.stop()
     drivetrain.set_stopping(COAST)
+
+# Start
+wait(250, MSEC)
+autonomous()
