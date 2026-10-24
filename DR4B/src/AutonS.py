@@ -49,7 +49,7 @@ def autonomous():
 
     claw_angle_motor.spin(FORWARD, 80, PERCENT)
     wait(500, MSEC)
-    drivetrain.drive(FORWARD,65,PERCENT)
+    drivetrain.drive(FORWARD,60,PERCENT)
     wait(500, MSEC)
     drivetrain.stop()
     #left()
