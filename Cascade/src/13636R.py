@@ -88,16 +88,16 @@ def driving_control():
     
     while True:
         # Get target speeds from the controller
-        target_forward = deadband(-1 * drive_control.axis3.position())
-        target_turn = deadband(drive_control.axis1.position())
+        target_forward = deadband(1 * drive_control.axis3.position())
+        target_turn = deadband(0.5 * drive_control.axis1.position())
 
         # Ease current speeds toward the target speeds
         current_forward = slew(current_forward, target_forward, accel_step)
         current_turn = slew(current_turn, target_turn, accel_step)
 
         # Apply the eased speeds to the motors
-        Ldrivetrain.spin(FORWARD, (current_forward + current_turn) * 0.5, PERCENT)
-        Rdrivetrain.spin(FORWARD, (current_forward - current_turn) * 0.5, PERCENT)
+        Ldrivetrain.spin(FORWARD, (current_forward + current_turn) * 1, PERCENT)
+        Rdrivetrain.spin(FORWARD, (current_forward - current_turn) * 1, PERCENT)
         
         wait(20, MSEC)
 
