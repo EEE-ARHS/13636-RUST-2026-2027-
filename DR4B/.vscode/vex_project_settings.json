@@ -4,7 +4,7 @@
 		"json": 2
 	},
 	"project": {
-		"name": "DR4B",
+		"name": "13636S",
 		"description": "Code for Double Reverse 4 Bar.",
 		"creationDate": "10/6/2026, 3:31:12 PM",
 		"platform": "V5",
@@ -12,7 +12,7 @@
 		"slot": 1,
 		"sdkVersion": "V5_1_0_1_25",
 		"python": {
-			"main": "src/SComp.py"
+			"main": "src/13636S.py"
 		}
 	}
 }
