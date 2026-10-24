@@ -29,18 +29,39 @@ intake_motor = Motor(Ports.PORT3,GearSetting.RATIO_18_1)
 claw_motor = Motor(Ports.PORT4,GearSetting.RATIO_18_1)
 intake_claw_motor = MotorGroup(intake_motor,claw_motor)
 piston = Pneumatics(brain.three_wire_port.a)
+turnAmnt = 40
+def left():
+    Ldrivetrain.spin(FORWARD, turnAmnt, PERCENT)
+    Rdrivetrain.spin(REVERSE, turnAmnt, PERCENT)
+
+def right():
+    Ldrivetrain.spin(REVERSE, turnAmnt, PERCENT)
+    Rdrivetrain.spin(FORWARD, turnAmnt, PERCENT)
+
 # auton
 def autonomous():
     brain.screen.clear_screen()
     brain.screen.print("autonomous code")
     # place automonous code here
-    drivetrain.set_drive_velocity(100, PERCENT)
-    drivetrain.set_stopping(BRAKE)
-    
-    drivetrain.drive(FORWARD,50,PERCENT)
+    piston.close()
+    elevator_motor.spin_for(FORWARD, 300, DEGREES)
+    wait(500, MSEC)
+    drivetrain.drive(REVERSE,70,PERCENT)
     wait(500, MSEC)
     drivetrain.stop()
+    #left()
+    right()
+    wait(500, MSEC)
+    drivetrain.stop()
+    drivetrain.drive(REVERSE,65,PERCENT)
+    wait(500, MSEC)
+    drivetrain.stop()
+    wait(500, MSEC)
+    claw_motor.spin_for(REVERSE,600,DEGREES)
+    wait(500,MSEC)
+    elevator_motor.spin_for(FORWARD, 300, DEGREES)
     drivetrain.set_stopping(COAST)
+
 
 # driving
 def deadband(value, threshold=5):
@@ -75,8 +96,8 @@ def driving_control():
         current_turn = slew(current_turn, target_turn, accel_step)
 
         # Apply the eased speeds to the motors
-        Ldrivetrain.spin(FORWARD, (current_forward + current_turn), PERCENT)
-        Rdrivetrain.spin(FORWARD, (current_forward - current_turn), PERCENT)
+        Ldrivetrain.spin(FORWARD, (current_forward + current_turn) * 0.5, PERCENT)
+        Rdrivetrain.spin(FORWARD, (current_forward - current_turn) * 0.5, PERCENT)
         
         wait(20, MSEC)
 

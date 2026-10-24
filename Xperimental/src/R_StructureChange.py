@@ -29,6 +29,15 @@ intake_motor = Motor(Ports.PORT3,GearSetting.RATIO_18_1)
 claw_motor = Motor(Ports.PORT4,GearSetting.RATIO_18_1)
 intake_claw_motor = MotorGroup(intake_motor,claw_motor)
 piston = Pneumatics(brain.three_wire_port.a)
+
+def left():
+    Ldrivetrain.spin(REVERSE, 50, PERCENT)
+    Rdrivetrain.spin(FORWARD, 50, PERCENT)
+
+def right():
+    Ldrivetrain.spin(FORWARD, 50, PERCENT)
+    Rdrivetrain.spin(REVERSE, 50, PERCENT)
+
 # auton
 def autonomous():
     brain.screen.clear_screen()
@@ -37,10 +46,24 @@ def autonomous():
     drivetrain.set_drive_velocity(100, PERCENT)
     drivetrain.set_stopping(BRAKE)
     
-    drivetrain.drive(FORWARD,50,PERCENT)
+    piston.open()
+    wait(500, MSEC)
+    drivetrain.drive(FORWARD,60,PERCENT)
     wait(500, MSEC)
     drivetrain.stop()
+    #left()
+    right()
+    wait(500, MSEC)
+    drivetrain.stop()
+    drivetrain.drive(FORWARD,40,PERCENT)
+    wait(500, MSEC)
+    drivetrain.stop()
+    wait(500, MSEC)
+    claw_motor.spin_for(FORWARD,180,DEGREES)
+    wait(500,MSEC)
+    elevator_motor.spin_for(FORWARD, 180, DEGREES)
     drivetrain.set_stopping(COAST)
+
 
 # driving
 def deadband(value, threshold=5):
