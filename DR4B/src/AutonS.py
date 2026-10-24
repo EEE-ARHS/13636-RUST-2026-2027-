@@ -31,6 +31,14 @@ elevator_full = MotorGroup(elevator_motorL,elevator_motorR)
 claw_angle_motor = Motor(Ports.PORT20)
 piston = Pneumatics(brain.three_wire_port.a)
 
+def left():
+    Ldrivetrain.spin(REVERSE, 50, PERCENT)
+    Rdrivetrain.spin(FORWARD, 50, PERCENT)
+
+def right():
+    Ldrivetrain.spin(FORWARD, 50, PERCENT)
+    Rdrivetrain.spin(REVERSE, 50, PERCENT)
+
 # auton
 def autonomous():
     brain.screen.clear_screen()
@@ -38,14 +46,20 @@ def autonomous():
     # place automonous code here
     drivetrain.set_drive_velocity(100, PERCENT)
     drivetrain.set_stopping(BRAKE)
-    
+
+    claw_angle_motor.spin(FORWARD, 80, PERCENT)
+    wait(500, MSEC)
+    drivetrain.drive(FORWARD,65,PERCENT)
+    wait(500, MSEC)
+    drivetrain.stop()
+    #left()
+    right()
+    wait(500, MSEC)
+    drivetrain.stop()
     drivetrain.drive(FORWARD,50,PERCENT)
     wait(500, MSEC)
     drivetrain.stop()
-    Ldrivetrain.spin(FORWARD, 50, PERCENT)
-    Rdrivetrain.spin(REVERSE, 50, PERCENT)
-    wait(500, MSEC)
-    drivetrain.stop()
+    piston.open()
     drivetrain.set_stopping(COAST)
 
 # Start
