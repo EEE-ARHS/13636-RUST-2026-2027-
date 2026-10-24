@@ -12,7 +12,7 @@
 		"slot": 3,
 		"sdkVersion": "V5_1_0_1_25",
 		"python": {
-			"main": "src/DR4BElevator.py"
+			"main": "src/S_StructureChange.py"
 		}
 	}
 }

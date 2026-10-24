@@ -47,7 +47,7 @@ def autonomous():
     drivetrain.set_drive_velocity(100, PERCENT)
     drivetrain.set_stopping(BRAKE)
 
-    claw_angle_motor.spin(FORWARD, 80, PERCENT)
+    claw_angle_motor.spin(FORWARD, 100, PERCENT)
     wait(500, MSEC)
     drivetrain.drive(FORWARD,60,PERCENT)
     wait(500, MSEC)
@@ -56,9 +56,10 @@ def autonomous():
     right()
     wait(500, MSEC)
     drivetrain.stop()
-    drivetrain.drive(FORWARD,50,PERCENT)
+    drivetrain.drive(FORWARD,40,PERCENT)
     wait(500, MSEC)
     drivetrain.stop()
+    wait(500, MSEC)
     piston.open()
     drivetrain.set_stopping(COAST)
 
