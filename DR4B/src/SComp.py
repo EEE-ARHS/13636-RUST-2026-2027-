@@ -72,6 +72,17 @@ def driving_control():
         target_forward = deadband(drive_control.axis3.position())
         target_turn = deadband(drive_control.axis1.position())
 
+
+        #I thought turn speed to fast, lowering by 10% to make allighning easier
+        target_turn *= 0.9
+
+
+        # Crawl Mode if Lift is above Stage 1 (180 degrees currently)
+        if current_level > 1:
+            target_forward *= 0.25
+            target_turn *= 0.25
+
+
         # Ease current speeds toward the target speeds
         current_forward = slew(current_forward, target_forward, accel_step)
         current_turn = slew(current_turn, target_turn, accel_step)
@@ -128,3 +139,128 @@ drive_control.buttonR2.released(rotate_stop)
 
 drive_control.buttonA.pressed(open_grip)
 drive_control.buttonB.released(close_grip)
+
+
+# DR4B ELEVATOR HEIGHT PRESETS
+
+
+# 0 = bottom of elevator
+
+LEVEL_POSITIONS = [0, 180, 360, 540, 720, 900]
+
+# CUSTOMIZE ELEVATOR SPEED
+PRESET_SPEED = 50  # Percent
+
+# Tracks the requested scoring level
+current_level = 0
+
+# Maximum available level
+MAX_LEVEL = len(LEVEL_POSITIONS) - 1
+
+# ELEVATOR POSITION RESET
+
+# Only start the program with the elevator at the bottom.
+elevator_motorR.set_position(0, DEGREES)
+elevator_motorL.set_position(0, DEGREES)
+
+# PRESET MOVEMENT
+
+def move_to_level():
+    target = LEVEL_POSITIONS[current_level]
+
+    elevator_full.spin_to_position(
+        target,
+        DEGREES,
+        PRESET_SPEED,
+        PERCENT,
+        wait=False
+    )
+
+
+def level_up():
+    global current_level
+
+    if current_level < MAX_LEVEL:
+        current_level += 1
+        move_to_level()
+
+
+def score():
+    global current_level
+
+    # Prevent scoring below Level 1
+    if current_level < 1:
+        return
+
+
+    # TEST: Lower Level 1 to 75%
+    # Delete this block if it doesn't work
+    if current_level == 1:
+        gap = LEVEL_POSITIONS[1] - LEVEL_POSITIONS[0]
+        target = LEVEL_POSITIONS[1] - gap * 0.75
+
+        elevator_full.spin_to_position(
+            target, DEGREES, PRESET_SPEED, PERCENT,
+            wait=True
+        )
+
+
+    # Step 1: Lower to 75% of the current level
+    # Skip this step if already at Level 1
+    if current_level > 1:
+        gap = LEVEL_POSITIONS[current_level] - LEVEL_POSITIONS[current_level - 1]
+        target = LEVEL_POSITIONS[current_level] - gap * 0.75
+
+        elevator_full.spin_to_position(
+            target, DEGREES, PRESET_SPEED, PERCENT,
+            wait=True
+        )
+
+    # Step 2: Open the claw (retract piston)
+    piston.close()
+    wait(100, MSEC)
+
+    # Step 3: Rotate the claw down 90 degrees
+    claw_angle_motor.spin_for(
+        REVERSE, 450, DEGREES, 30, PERCENT,
+        wait=True
+    )
+
+    # Step 4: Return elevator to Level 1
+    current_level = 1
+
+    elevator_full.spin_to_position(
+        LEVEL_POSITIONS[1],
+        DEGREES,
+        PRESET_SPEED,
+        PERCENT,
+        wait=True
+    )
+
+
+def level_bottom():
+    global current_level
+
+    current_level = 0
+    move_to_level()
+
+
+def level_top():
+    global current_level
+
+    current_level = MAX_LEVEL
+    move_to_level()
+
+# CONTROLLER ARROW BUTTONS
+
+# UP: Move one scoring level higher
+drive_control.buttonUp.pressed(level_up)
+
+# DOWN: Scores and returns to bottom + 1--current is going to level_bottom
+drive_control.buttonDown.pressed(level_bottom)
+
+# LEFT: Return to bottom if switch to level_bottom-- current --> if driver wants : Scores and returns to bottom + 1
+drive_control.buttonLeft.pressed(score)
+
+# RIGHT: Move to highest level
+drive_control.buttonRight.pressed(level_top)
