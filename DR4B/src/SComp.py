@@ -138,7 +138,7 @@ drive_control.buttonR2.pressed(rotate_down)
 drive_control.buttonR2.released(rotate_stop)
 
 drive_control.buttonA.pressed(open_grip)
-drive_control.buttonB.released(close_grip)
+drive_control.buttonB.pressed(close_grip)
 
 
 # DR4B ELEVATOR HEIGHT PRESETS
@@ -169,10 +169,7 @@ def move_to_level():
     target = LEVEL_POSITIONS[current_level]
 
     elevator_full.spin_to_position(
-        target,
-        DEGREES,
-        PRESET_SPEED,
-        PERCENT,
+        target, DEGREES, PRESET_SPEED, PERCENT,
         wait=False
     )
 
@@ -188,56 +185,40 @@ def level_up():
 def score():
     global current_level
 
-    # Prevent scoring below Level 1
+    # Prevent scoring at Level 0
     if current_level < 1:
+
         return
-        print("Cannot score below Level 1")
 
 
-    # TEST: Lower Level 1 to 75%
-    # Delete this block if it doesn't work
-    elif current_level == 1:
-        gap = LEVEL_POSITIONS[1] - LEVEL_POSITIONS[0]
-        target = LEVEL_POSITIONS[1] - gap * 0.75
-
-        elevator_full.spin_to_position(
-            target, DEGREES, PRESET_SPEED, PERCENT,
-            wait=True
-        )
-        print("Scored at level 1")
+    # Step 1: Calculate the lowering position for ANY level
+    gap = LEVEL_POSITIONS[current_level] - LEVEL_POSITIONS[current_level - 1]
+    target = LEVEL_POSITIONS[current_level] - (gap * 0.50)
 
 
-    # Step 1: Lower to 75% of the current level
-    # Skip this step if already at Level 1
-    elif current_level > 1:
-        gap = LEVEL_POSITIONS[current_level] - LEVEL_POSITIONS[current_level - 1]
-        target = LEVEL_POSITIONS[current_level] - gap * 0.75
+    # Step 2: Lower elevator
+    elevator_full.spin_to_position(
+        target, DEGREES, PRESET_SPEED, PERCENT,
+        wait=True
+    )
 
-        elevator_full.spin_to_position(
-            target, DEGREES, PRESET_SPEED, PERCENT,
-            wait=True
-        )
-        print("Scored at level >1")
 
-    # Step 2: Open the claw (retract piston)
+    # Step 3: Open claw
     open_grip()
-    brain.screen.print("It worked btw!")
     wait(100, MSEC)
 
-    # Step 3: Rotate the claw down 90 degrees
+    # Step 4: Rotate claw downward
     claw_angle_motor.spin_for(
         REVERSE, 450, DEGREES, 30, PERCENT,
         wait=True
     )
 
-    # Step 4: Return elevator to Level 1
+
+    # Step 5: Return elevator to Level 1
     current_level = 1
 
     elevator_full.spin_to_position(
-        LEVEL_POSITIONS[1],
-        DEGREES,
-        PRESET_SPEED,
-        PERCENT,
+        LEVEL_POSITIONS[1], DEGREES, PRESET_SPEED, PERCENT,
         wait=True
     )
 
