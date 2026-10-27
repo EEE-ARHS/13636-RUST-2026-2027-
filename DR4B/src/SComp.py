@@ -191,11 +191,12 @@ def score():
     # Prevent scoring below Level 1
     if current_level < 1:
         return
+        print("Cannot score below Level 1")
 
 
     # TEST: Lower Level 1 to 75%
     # Delete this block if it doesn't work
-    if current_level == 1:
+    elif current_level == 1:
         gap = LEVEL_POSITIONS[1] - LEVEL_POSITIONS[0]
         target = LEVEL_POSITIONS[1] - gap * 0.75
 
@@ -203,11 +204,12 @@ def score():
             target, DEGREES, PRESET_SPEED, PERCENT,
             wait=True
         )
+        print("Scored at level 1")
 
 
     # Step 1: Lower to 75% of the current level
     # Skip this step if already at Level 1
-    if current_level > 1:
+    elif current_level > 1:
         gap = LEVEL_POSITIONS[current_level] - LEVEL_POSITIONS[current_level - 1]
         target = LEVEL_POSITIONS[current_level] - gap * 0.75
 
@@ -215,9 +217,11 @@ def score():
             target, DEGREES, PRESET_SPEED, PERCENT,
             wait=True
         )
+        print("Scored at level >1")
 
     # Step 2: Open the claw (retract piston)
-    piston.close()
+    open_grip()
+    brain.screen.print("It worked btw!")
     wait(100, MSEC)
 
     # Step 3: Rotate the claw down 90 degrees
